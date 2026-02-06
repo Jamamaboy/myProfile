@@ -23,6 +23,20 @@ body {
   color: var(--color-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* Dark mode overrides */
+html.dark {
+  --color-bg: #111111;
+  --color-heading: #F0EFED;
+  --color-body: #A0A0A0;
+  --color-accent: #D4895E;
+  --color-accent-hover: #E09B72;
+  --color-accent-light: #2A1F18;
+  --color-divider: #2A2A2A;
+  --color-card: #1A1A1A;
+  --color-muted: #6B6B6B;
 }
 
 /* Fade-in animation */

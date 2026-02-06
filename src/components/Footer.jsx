@@ -1,10 +1,11 @@
-import { Github, Linkedin, Mail, Globe } from 'lucide-react'
+import { Github, Linkedin, Mail, Globe, Phone } from 'lucide-react'
 import { useInView } from '../hooks/useInView'
 
 const socials = [
   { icon: Github, href: 'https://github.com/Jamamaboy', label: 'GitHub' },
   { icon: Linkedin, href: 'https://www.linkedin.com/in/putthipong-soongsuwan-b78013314/', label: 'LinkedIn' },
   { icon: Mail, href: 'mailto:putthipong.sowork@gmail.com', label: 'Email' },
+  { icon: Phone, href: 'tel:0988983876', label: 'Phone' },
   { icon: Globe, href: 'https://colon-d.vercel.app/', label: 'Colon D' },
 ]
 

@@ -1,4 +1,15 @@
+import { Github, Linkedin, Globe } from 'lucide-react'
 import { useInView } from '../hooks/useInView'
+import { parseAbout, renderInlineMarkdown } from '../utils/parseContent'
+import rawAbout from '../content/about.md?raw'
+
+const socials = [
+  { icon: Github, href: 'https://github.com/Jamamaboy', label: 'GitHub', color: 'text-[#333] hover:bg-[#333]/10' },
+  { icon: Linkedin, href: 'https://www.linkedin.com/in/putthipong-soongsuwan-b78013314/', label: 'LinkedIn', color: 'text-[#0A66C2] hover:bg-[#0A66C2]/10' },
+  { icon: Globe, href: 'https://colon-d.vercel.app/', label: 'Colon D', color: 'text-[#8B5CF6] hover:bg-[#8B5CF6]/10' },
+]
+
+const about = parseAbout(rawAbout)
 
 export default function Hero() {
   const [ref, isInView] = useInView()
@@ -28,8 +39,8 @@ export default function Hero() {
             }`}
           >
             <img
-              src="/profile.jpg"
-              alt="Putthipong Soongsuwan"
+              src={about.photo}
+              alt={about.name}
               className="aspect-[3/4] w-full max-w-sm mx-auto lg:mx-0 rounded-2xl object-cover border border-[var(--color-divider)]"
             />
           </div>
@@ -41,7 +52,7 @@ export default function Hero() {
                 isInView ? 'animate-fade-in-up animation-delay-200' : 'opacity-0'
               }`}
             >
-              Hello, I'm Putthipong
+              Hello, I'm {about.name}
             </h1>
 
             <p
@@ -49,24 +60,56 @@ export default function Hero() {
                 isInView ? 'animate-fade-in-up animation-delay-300' : 'opacity-0'
               }`}
             >
-              Founder & Engineer
+              {about.title}
             </p>
 
             <p
-              className={`mt-6 text-base md:text-[17px] text-[var(--color-body)] leading-[1.75] max-w-lg ${
+              className={`mt-6 text-base md:text-[17px] text-[var(--color-body)] leading-[1.75] max-w-lg [&_mark]:bg-[var(--color-accent-light)] [&_mark]:text-[var(--color-accent)] [&_mark]:px-1 [&_mark]:rounded [&_mark]:font-semibold [&_strong]:font-bold [&_strong]:text-[var(--color-heading)] [&_em]:italic ${
                 isInView ? 'animate-fade-in-up animation-delay-400' : 'opacity-0'
               }`}
+              dangerouslySetInnerHTML={{ __html: renderInlineMarkdown(about.bio) }}
+            />
+
+            {/* Contact + Tags */}
+            <div
+              className={`mt-6 flex flex-col sm:flex-row sm:items-start gap-4 ${
+                isInView ? 'animate-fade-in-up animation-delay-500' : 'opacity-0'
+              }`}
             >
-              I like building things that matter — whether it's a startup, a side project
-              at 2 AM, or a team around an idea. Most days you'll find me writing code,
-              joining hackathons, or figuring out how to make something work better.
-              I believe great products come from people who genuinely care.
-            </p>
+              <div className="flex flex-col gap-1 text-sm text-[var(--color-body)] shrink-0">
+                <p>putthipong.sowork@gmail.com</p>
+                <p>098-898-3876</p>
+              </div>
+              {about.tags.length > 0 && (
+                <div className="flex flex-wrap gap-2">
+                  {about.tags.map((tag, i) => {
+                    const colors = [
+                      'bg-amber-50 text-amber-700 border-amber-200',
+                      'bg-sky-50 text-sky-700 border-sky-200',
+                      'bg-rose-50 text-rose-600 border-rose-200',
+                      'bg-emerald-50 text-emerald-700 border-emerald-200',
+                      'bg-violet-50 text-violet-700 border-violet-200',
+                      'bg-orange-50 text-orange-700 border-orange-200',
+                      'bg-teal-50 text-teal-700 border-teal-200',
+                      'bg-indigo-50 text-indigo-700 border-indigo-200',
+                    ]
+                    return (
+                      <span
+                        key={tag}
+                        className={`px-3 py-1 text-xs font-medium rounded-full border ${colors[i % colors.length]}`}
+                      >
+                        {tag}
+                      </span>
+                    )
+                  })}
+                </div>
+              )}
+            </div>
 
             {/* CTA Buttons */}
             <div
-              className={`mt-8 flex flex-wrap gap-4 ${
-                isInView ? 'animate-fade-in-up animation-delay-500' : 'opacity-0'
+              className={`mt-6 flex flex-wrap gap-4 ${
+                isInView ? 'animate-fade-in-up animation-delay-600' : 'opacity-0'
               }`}
             >
               <a
@@ -75,12 +118,29 @@ export default function Hero() {
               >
                 See My Journey
               </a>
-              <a
-                href="#contact"
-                className="inline-flex items-center px-6 py-3 border border-[var(--color-divider)] text-[var(--color-heading)] text-sm font-semibold rounded-xl hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors duration-200"
-              >
-                Say Hello
-              </a>
+            </div>
+
+            {/* Social Icons */}
+            <div
+              className={`mt-5 flex items-center gap-3 ${
+                isInView ? 'animate-fade-in-up animation-delay-700' : 'opacity-0'
+              }`}
+            >
+              {socials.map((social) => {
+                const Icon = social.icon
+                return (
+                  <a
+                    key={social.label}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={social.label}
+                    className={`w-11 h-11 rounded-xl border border-[var(--color-divider)] flex items-center justify-center ${social.color} transition-all duration-200`}
+                  >
+                    <Icon className="w-[18px] h-[18px]" strokeWidth={1.5} />
+                  </a>
+                )
+              })}
             </div>
           </div>
         </div>
