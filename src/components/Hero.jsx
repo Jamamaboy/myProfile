@@ -1,4 +1,5 @@
-import { Github, Linkedin, Globe } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { Github, Linkedin, Globe, Command } from 'lucide-react'
 import { useInView } from '../hooks/useInView'
 import { parseAbout, renderInlineMarkdown } from '../utils/parseContent'
 import rawAbout from '../content/about.md?raw'
@@ -11,8 +12,31 @@ const socials = [
 
 const about = parseAbout(rawAbout)
 
+function useTypingEffect(text, speed = 60) {
+  const [displayed, setDisplayed] = useState('')
+  const [done, setDone] = useState(false)
+
+  useEffect(() => {
+    let i = 0
+    setDisplayed('')
+    setDone(false)
+    const timer = setInterval(() => {
+      i++
+      setDisplayed(text.slice(0, i))
+      if (i >= text.length) {
+        clearInterval(timer)
+        setDone(true)
+      }
+    }, speed)
+    return () => clearInterval(timer)
+  }, [text, speed])
+
+  return [displayed, done]
+}
+
 export default function Hero() {
   const [ref, isInView] = useInView()
+  const [typedName, typingDone] = useTypingEffect(about.name, 70)
 
   return (
     <section
@@ -52,7 +76,7 @@ export default function Hero() {
                 isInView ? 'animate-fade-in-up animation-delay-200' : 'opacity-0'
               }`}
             >
-              Hello, I'm {about.name}
+              Hello, I'm <span className={typingDone ? '' : 'typing-cursor'}>{typedName}</span>
             </h1>
 
             <p
@@ -120,7 +144,7 @@ export default function Hero() {
               </a>
             </div>
 
-            {/* Social Icons */}
+            {/* Social Icons + Cmd+K hint */}
             <div
               className={`mt-5 flex items-center gap-3 ${
                 isInView ? 'animate-fade-in-up animation-delay-700' : 'opacity-0'
@@ -141,6 +165,13 @@ export default function Hero() {
                   </a>
                 )
               })}
+              <button
+                onClick={() => window.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', metaKey: true }))}
+                className="hidden sm:inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-[var(--color-divider)] text-[var(--color-muted)] hover:text-[var(--color-heading)] hover:border-[var(--color-accent)] transition-colors duration-200 text-xs font-mono"
+              >
+                <Command className="w-3 h-3" />
+                <span>K</span>
+              </button>
             </div>
           </div>
         </div>

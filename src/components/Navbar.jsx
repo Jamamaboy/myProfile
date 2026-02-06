@@ -3,7 +3,6 @@ import { Menu, X, Mail, Phone, Linkedin, Copy, Check, Sun, Moon } from 'lucide-r
 
 const navLinks = [
   { label: 'About', href: '#about' },
-  { label: 'Interests', href: '#vision' },
   { label: 'Experience', href: '#experience' },
 ]
 

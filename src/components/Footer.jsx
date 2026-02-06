@@ -49,6 +49,9 @@ export default function Footer() {
           })}
         </div>
       </div>
+      <p className="max-w-5xl mx-auto mt-6 text-[10px] font-mono text-[var(--color-divider)] select-none text-center tracking-widest">
+        ↑ ↑ ↓ ↓ ← → ← → b a
+      </p>
     </footer>
   )
 }
